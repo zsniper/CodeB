@@ -3,11 +3,11 @@ bought_at = {}
 tickers = clientpy2.securities().keys()
 for ticker in tickers:
     bought_at[ticker]=0
-def on_divhack_event(e):
+def on_divhack_event(e, tickers_3):
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     
     
-    if e['action'] == 'ASK'and e['ticker'] in tickers:
+    if e['action'] == 'ASK'and e['ticker'] in tickers_3:
         price = get_worth_price(e['ticker'], e['price'])
         # if is_in_our_orders(e['ticker'], our_orders):
         #     undercut_price = get_undercut_price(e['ticker'], e['price'])
@@ -16,7 +16,7 @@ def on_divhack_event(e):
         #         clientpy2.ask(e['ticker'], undercut_price, shares_to_sell)
         #         return True
         if price > 0:
-            shares_to_sell = get_shares_to_sell(our_orders, e['ticker'],tickers, e['price'])
+            shares_to_sell = get_shares_to_sell(our_orders, e['ticker'],tickers_3, e['price'])
             clientpy2.bid(e['ticker'], price, shares_to_sell)
             bought_at[e['ticker']]=price
             new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'])
@@ -34,8 +34,8 @@ def get_worth_price(ticker, price):
 def get_undercut_price(ticker, price):
     return price + 0.1
 
-def get_shares_to_sell(our_orders, ticker,tickers, price):
-    return int((3- tickers.index(ticker))*clientpy2.my_cash()/9.0)
+def get_shares_to_sell(our_orders, ticker,tickers_3, price):
+    return int((3- tickers_3.index(ticker))*clientpy2.my_cash()/9.0)
     # return our_orders['shares']
 
 def get_new_sell_price(our_orders, ticker, price):
