@@ -7,10 +7,17 @@ def on_divhack_event(e, rates, tickers_3):
 
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     
-    
+    #print 'hello?'
 
-    if e['action'] == 'ASK'and e['ticker'] in tickers_3:
+    if e['ticker'] not in bought_at.keys():
+        bought_at[e['ticker']] = e['price']
+
+
+
+
+    if e['action'] == 'ASK' and e['ticker'] in tickers_3:
         price = get_worth_price(e['ticker'], e['price'])
+        modifier = 0.9
         # if is_in_our_orders(e['ticker'], our_orders):
         #     undercut_price = get_undercut_price(e['ticker'], e['price'])
         #     if undercut_price > 0:
@@ -18,7 +25,8 @@ def on_divhack_event(e, rates, tickers_3):
         #         clientpy2.ask(e['ticker'], undercut_price, shares_to_sell)
         #         return True
         new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'], rates)
-        if price < new_sell_price:
+        print 'price: ' + str(price) + ' new_sell_price ' + str(new_sell_price)
+        if price*modifier < new_sell_price:
             shares_to_sell = get_shares_to_sell(our_orders, e['ticker'],tickers_3, e['price'])
             clientpy2.bid(e['ticker'], price, shares_to_sell)
             bought_at[e['ticker']]=price
@@ -59,5 +67,5 @@ def get_our_orders(ticker, price):
 def decrement_prices(rates):
     m_orders = clientpy2.my_orders()
 
-    for key in m_orders.keys()
+    for key in m_orders.keys():
         clientpy2.bid(key, get_new_sell_price(0, key, 0, rates), m_orders[key]['shares'])
