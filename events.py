@@ -1,6 +1,6 @@
 import clientpy2
 
-def on_event(e):
+def on_broker_event(e):
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     if e['action'] == 'ASK':
         price = get_worth_price(e['ticker'], e['price'])

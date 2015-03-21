@@ -10,8 +10,8 @@ def event_loop():
         past_orders[t] = []
     while True:
         order_npast = push_event(past_orders, tickers)
-        
-        map(events.on_event, order_npast['process'])
+
+        map(events.on_broker_event, order_npast['process'])
         past_orders = order_npast['hist']
         print 'tick'
         time.sleep(0.5)
