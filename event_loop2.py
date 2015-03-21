@@ -34,15 +34,15 @@ def event_loop2():
     active_tickers.append(next_ticker.get())
     active_tickers.append(next_ticker.get())
     active_tickers.append(next_ticker.get()) 
-    first = True 
-    first2 = True
+
     while True:        
         sec = clientpy2.my_securities()
-        dividend_rates = update_dividends(dividend_rates, sec);
 
-        persist = cycle_ticker(next_ticker, active_tickers, persist, sec)
-        
+        dividend_rates = update_dividends(dividend_rates, sec);
         persist['div_rate'] = dividend_rates
+        
+        persist = cycle_ticker(next_ticker, active_tickers, persist, sec)
+
 
         for key in active_tickers:
             mini = {}
@@ -55,20 +55,7 @@ def event_loop2():
 
         persist = divhack2.inc_liquidate(persist, active_tickers)
         
-        #print dividend_rates
-        #order_npast = push_event(past_orders, tickers)
-
-        #persist['div_rate'] = dividend_rates
-        # map(broker.on_broker_event, order_npast['process'])
-        #map((lambda x: divhack.on_divhack_event(x, dividend_rates, active_tickers)), order_npast['process'])
-
-        #for event in order_npast['process']:
-        #    persist = divhack2.on_divhack_event(event, active_tickers, persist)
-
-        #past_orders = order_npast['hist']
         print 'tick'
-#        time.sleep(0.5)
-    #sleep thread
 
 def cycle_ticker(ticker_queue, active, persist, sec):
     for ticker in active:
@@ -78,7 +65,7 @@ def cycle_ticker(ticker_queue, active, persist, sec):
             new_ticker = ticker_queue.get()
             active[active.index(ticker)] = new_ticker
             persist[new_ticker]['liquidate'] = False    
-            return persist
+        return persist
 
 #returns list to process and past orders.
 def push_event(past, tickers):
