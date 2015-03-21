@@ -1,6 +1,7 @@
 import time
 import clientpy2
-import events
+import broker
+import divhack
 
 def event_loop():
     #event_queue = Queue.Queue
@@ -11,7 +12,7 @@ def event_loop():
     while True:
         order_npast = push_event(past_orders, tickers)
 
-        map(events.on_broker_event, order_npast['process'])
+        map(broker.on_broker_event, order_npast['process'])
         past_orders = order_npast['hist']
         print 'tick'
         time.sleep(0.5)

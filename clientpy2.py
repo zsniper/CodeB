@@ -2,7 +2,8 @@ import socket
 import sys
     
 from hello import *
-from events import *
+from broker import *
+from divhack import *
 from event_loop import *
 
 def run(*commands):
