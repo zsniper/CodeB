@@ -8,13 +8,25 @@ def event_loop():
     tickers = clientpy2.securities().keys()
     for t in tickers:
         past_orders[t] = []
+
+    numberoftickers = len(tickers)
+    rotation = 0
+    activetickers = []
+
     while True:
-        order_npast = push_event(past_orders, tickers)
-        
-        map(events.on_event, order_npast['process'])
+        if rotation % 2 == 0:
+            activetickers = tickers[0:numberoftickers/2]
+        elif rotation % 2 == 1:
+            activetickers = tickers[numberoftickers/2:-1]
+        order_npast = push_event(past_orders, activetickers)
+
+        for x in order_npast['process']:
+            events.on_event(x)
+
         past_orders = order_npast['hist']
         print 'tick'
-        time.sleep(0.5)
+        time.sleep(0.1)
+        rotation = (rotation + 1) % 2
     #sleep thread
 
 #returns list to process and past orders.
