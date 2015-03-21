@@ -3,10 +3,10 @@ import clientpy2
 import events
 
 def net_worth_compare(item):
-    return item['net_worth']
+    return int(item['net_worth'])
 
 def value_compare(item):
-    return item['value']
+    return int(item['value'])
 
 
 def value(net_worth, ):
