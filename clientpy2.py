@@ -39,15 +39,13 @@ def my_securities(ticker=False, key = False):
             return dic.get(ticker).get(key)
         return dic.get(ticker)
     return dic
-def my_orders(action=False, key = False):
+def my_orders(ticker=False):
     data = run("MY_ORDERS").split()[1:]
     dic = {}
-    for i in range(len(data)/3):
-            dic[data[i*3]] = {'price':int(data[i*3 +1]),'shares':float(data[i*3 + 2])}
-    if action:
-        if key:
-            return dic.get(action).get(key)
-        return dic.get(action)
+    for i in range(len(data)/4):
+            dic[data[i*4 +1]] = {'action':data[i*4],'price':float(data[i*4 +2]),'shares':int(data[i*4 + 3])}
+    if ticker:
+        return dic.get(ticker)
     return dic
 def securities(action=False, key = False):
     data = run("SECURITIES").split()[1:]
@@ -59,15 +57,12 @@ def securities(action=False, key = False):
             return dic.get(action).get(key)
         return dic.get(action)
     return dic
+
 def orders(ticker):
-    data = run("ORDERS " + ticker).split()[1:]
-    dic = {}
-    for i in range(len(data)/3):
-            dic[data[i*3]] = {'price':int(data[i*3 +1]),'shares':float(data[i*3 + 2])}
-    if action:
-        if key:
-            return dic.get(action).get(key)
-        return dic.get(action)
+    data = run("ORDERS " +ticker).split()[1:]
+    dic = []
+    for i in range(len(data)/4):
+            dic.append({'action': data[i*4],'price':float(data[i*4 +2]),'shares':int(data[i*4 + 3])})
     return dic
 def bid(ticker, price, shares):
     run("BID " + ticker + " " + price + " " + shares)
