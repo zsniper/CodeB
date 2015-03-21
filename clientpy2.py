@@ -47,16 +47,17 @@ def my_orders(ticker=False):
     if ticker:
         return dic.get(ticker)
     return dic
-def securities(action=False, key = False):
+def securities(ticker=False, key = False):
     data = run("SECURITIES").split()[1:]
     dic = {}
     for i in range(len(data)/4):
             dic[data[i*4]] = {'net_worth':float(data[i*4 +1]),'dividend_ratio':float(data[i*4 + 2]), 'volatility':float(data[i*4 +3])}
-    if action:
+    if ticker:
         if key:
-            return dic.get(action).get(key)
-        return dic.get(action)
+            return dic.get(ticker).get(key)
+        return dic.get(ticker)
     return dic
+
 
 def orders(ticker):
     data = run("ORDERS " +ticker).split()[1:]
