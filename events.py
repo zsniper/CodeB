@@ -33,7 +33,7 @@ def get_shares_to_sell(our_orders, ticker, price):
     # return our_orders['shares']
 
 def get_new_sell_price(our_orders, ticker, price):
-    return price - 0.01
+    return price
 
 def is_in_our_orders(ticker, our_orders):
     print 'is_in_our_orders' + str(ticker) + '\n'
