@@ -16,7 +16,16 @@ def event_loop():
         secs = clientpy2.securities()
         #print secs['HOG']['net_worth']
         tickers = secs.keys()
-        sorted(tickers, key=net_worth_compare)
+
+        # lst = []
+        # for t in tickers:
+        #     lst.append(int(secs[t]['net_worth']))
+
+        # sorted(lst)
+
+
+        # sorted(tickers, key=net_worth_compare)
+        # print tickers
 
         max_ticker_value = 0
         max_ticker_name = ''
@@ -33,7 +42,9 @@ def event_loop():
                 max_ticker_value = new_value
                 max_ticker_name = ticker
 
-        sorted(ticker_values, key=value_compare)
+        print 'ticker_values1: ' + str(ticker_values)
+        ticker_values = sorted(ticker_values, key=value_compare)[::-1]
+        print 'ticker_values2: ' + str(ticker_values)
 
 
         current_cash = float(clientpy2.my_cash())
@@ -41,7 +52,7 @@ def event_loop():
         clientpy2.bid(max_ticker_name, min_sell_value, shares_bought)
         print 'bid: max_ticker_name: ' + str(max_ticker_name) + ' min_sell_value: ' + str(min_sell_value) + ' shares_bought: ' + str(shares_bought)
 
-        threshold = 0.0001
+        threshold = 0.00075
 
         second_ticker_name = ''
         third_ticker_name = ''
@@ -52,7 +63,7 @@ def event_loop():
             max_ticker_name = ticker_values[i]['ticker']
             while clientpy2.my_securities(max_ticker_name, 'dividend_ratio') > threshold:
                 second_ticker_name = ticker_values[(i+1)%len(tickers)]['ticker']
-                min_sell_value = float(lientpy2.min_sell(second_ticker_name))
+                min_sell_value = float(clientpy2.min_sell(second_ticker_name))
 
                 current_cash = float(clientpy2.my_cash())
                 shares_bought = current_cash//min_sell_value
