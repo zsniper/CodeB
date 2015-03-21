@@ -7,7 +7,7 @@ def on_divhack_event(e):
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     
     
-    if e['action'] == 'ASK'and e['ticker'] in tickers::
+    if e['action'] == 'ASK'and e['ticker'] in tickers:
         price = get_worth_price(e['ticker'], e['price'])
         # if is_in_our_orders(e['ticker'], our_orders):
         #     undercut_price = get_undercut_price(e['ticker'], e['price'])
