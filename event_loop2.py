@@ -61,13 +61,9 @@ def event_loop2():
         #persist['div_rate'] = dividend_rates
         # map(broker.on_broker_event, order_npast['process'])
         #map((lambda x: divhack.on_divhack_event(x, dividend_rates, active_tickers)), order_npast['process'])
-<<<<<<< HEAD
+
         #for event in order_npast['process']:
         #    persist = divhack2.on_divhack_event(event, active_tickers, persist)
-=======
-        for event in order_npast['process']:
-            persist = divhack2.on_divhack_event(event, tickers, persist)
->>>>>>> c29f3a22eda4eece8705eda87bd2d7592f451bac
 
         #past_orders = order_npast['hist']
         print 'tick'
