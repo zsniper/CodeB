@@ -2,10 +2,10 @@ import clientpy2
 
 def on_event(e):
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
-    if e['liquidate'] % 5 == 0:
-        clientpy2.ask(e['ticker'], e['price']-0.05,5)
-        print 'asking: ' + str(e['ticker']) + ' price: ' + str(e['price']) + ' shares_to_sell: ' + str(5) + '\n'
-    elif e['action'] == 'ASK':
+    # if e['liquidate'] % 5 == 0:
+    #     clientpy2.ask(e['ticker'], e['price']-0.05,5)
+    #     print 'asking: ' + str(e['ticker']) + ' price: ' + str(e['price']) + ' shares_to_sell: ' + str(5) + '\n'
+    if e['action'] == 'ASK':
         price = get_worth_price(e['ticker'], e['price'])
         # if is_in_our_orders(e['ticker'], our_orders):
         #     undercut_price = get_undercut_price(e['ticker'], e['price'])
