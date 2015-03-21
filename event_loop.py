@@ -10,7 +10,7 @@ def event_loop():
     dividend_rates = {}
     sec = clientpy2.securities()
     for key in sec.keys():
-        dividend_rates[key] = sec[key]['dividend_rates']
+        dividend_rates[key] = sec[key]['dividend_ratio']
 
     #Initializing past values
     past_orders = {}
@@ -23,17 +23,21 @@ def event_loop():
     for key in dividend_rates.keys():
         next_ticker.put(key)
 
-    active_tickers = [].append(next_ticker.get()).append(next_ticker.get()).append(next_ticker.get()).append(next_ticker.get())
+    active_tickers = []
+    active_tickers.append(next_ticker.get())
+    active_tickers.append(next_ticker.get())
+    active_tickers.append(next_ticker.get())
+    active_tickers.append(next_ticker.get())
 
     while True:
         
         dividend_rates = update_dividends(dividend_rates);
         order_npast = push_event(past_orders, tickers)
 
-        map(broker.on_broker_event, order_npast['process'])
-        map((lambda x: divhack.on_divhack_event(x, dividend_rates, active)), order_past['process'])
+        # map(broker.on_broker_event, order_npast['process'])
+        map((lambda x: divhack.on_divhack_event(x, dividend_rates, active_tickers)), order_npast['process'])
         past_orders = order_npast['hist']
-        cycle_ticker(ticker_queue, active)
+        cycle_ticker(next_ticker, active_tickers)
         print 'tick'
         time.sleep(0.5)
     #sleep thread
@@ -44,7 +48,7 @@ def cycle_ticker(ticker_queue, active):
     #for i in range(len(active)):
         if sec[ticker]['shares'] == 0:
             ticker_queue.put(ticker)
-            active.index(ticker) = ticker_queue.get()
+            active[active.index(ticker)] = ticker_queue.get()
 
 #returns list to process and past orders.
 def push_event(past, tickers):
@@ -64,5 +68,5 @@ def update_dividends(dividend_rates):
     divs = securities.keys()
     for key in divs:
         if securities[key] != 0:
-            dividend_rates[key] = securities[key]['dividend_rates']
+            dividend_rates[key] = securities[key]['dividend_ratio']
     return dividend_rates

@@ -1,9 +1,10 @@
-import clientpy2
+from clientpy2 import clientpy2
 bought_at = {}
-tickers = clientpy2.securities().keys()
-for ticker in tickers:
-    bought_at[ticker]=0
-def on_divhack_event(e, tickers_3):
+# tickers = clientpy2.securities().keys()
+# for ticker in tickers:
+#     bought_at[ticker]=0
+def on_divhack_event(e, rates, tickers_3):
+
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     
     
@@ -19,10 +20,10 @@ def on_divhack_event(e, tickers_3):
             shares_to_sell = get_shares_to_sell(our_orders, e['ticker'],tickers_3, e['price'])
             clientpy2.bid(e['ticker'], price, shares_to_sell)
             bought_at[e['ticker']]=price
-            new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'])
+            new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'], rates)
             clientpy2.ask(e['ticker'], new_sell_price, shares_to_sell)
-            print 'bidding: ' + str(e['ticker']) + ' price: ' + str(price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
-            print 'asking: ' + str(e['ticker']) + ' price: ' + str(new_sell_price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
+            print 'bidding: ' + ' ticker: ' + str(e['ticker']) + ' price: ' + str(price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
+            print 'asking: ' + ' ticker: ' + str(e['ticker']) + ' price: ' + str(new_sell_price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
             return True
     # if e.type == bid:
         # do later
@@ -38,7 +39,7 @@ def get_shares_to_sell(our_orders, ticker,tickers_3, price):
     return int((3- tickers_3.index(ticker))*clientpy2.my_cash()/9.0)
     # return our_orders['shares']
 
-def get_new_sell_price(our_orders, ticker, price):
+def get_new_sell_price(our_orders, ticker, price, rates):
     modifier= 0.15
     rate = rates.get(ticker)
     return bought_at[ticker]*(1 + rate - modifier)
