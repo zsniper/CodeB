@@ -46,12 +46,17 @@ def event_loop():
         ticker_values = sorted(ticker_values, key=value_compare)[::-1]
         print 'ticker_values2: ' + str(ticker_values)
 
-        # min_sell_value = min_sell_value - 
-
-        current_cash = float(clientpy2.my_cash())
-        shares_bought = current_cash//min_sell_value
-        clientpy2.bid(max_ticker_name, min_sell_value, shares_bought)
-        print 'bid: max_ticker_name: ' + str(max_ticker_name) + ' min_sell_value: ' + str(min_sell_value) + ' shares_bought: ' + str(shares_bought)
+        current_cash = float(clientpy2.my_cash())*0.75
+        while True:
+            
+            min_sell_value = min_sell_value + 0.05
+            shares_bought = int(current_cash//min_sell_value)
+            clientpy2.bid(max_ticker_name, min_sell_value, shares_bought)
+            print 'bid: max_ticker_name: ' + str(max_ticker_name) + ' min_sell_value: ' + str(min_sell_value) + ' shares_bought: ' + str(shares_bought)
+            a = clientpy2.my_securities(max_ticker_name, 'shares')
+            if a > 0:
+                print 'order bid: max_ticker_name: ' + str(max_ticker_name) + ' min_sell_value: ' + str(min_sell_value) + ' shares_bought: ' + str(shares_bought)
+                break
 
         threshold = 0.00075
 
@@ -67,7 +72,7 @@ def event_loop():
                 min_sell_value = float(clientpy2.min_sell(second_ticker_name))
 
                 current_cash = float(clientpy2.my_cash())
-                shares_bought = current_cash//min_sell_value
+                shares_bought = int(current_cash//min_sell_value)
                 
                 clientpy2.bid(second_ticker_name, min_sell_value, shares_bought)
                 print 'bid: second_ticker_name: ' + str(second_ticker_name) + ' min_sell_value: ' + str(min_sell_value) + ' shares_bought: ' + str(shares_bought)
