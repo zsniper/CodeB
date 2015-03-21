@@ -65,13 +65,13 @@ def orders(ticker):
             dic.append({'action': data[i*4],'price':float(data[i*4 +2]),'shares':int(data[i*4 + 3])})
     return dic
 def bid(ticker, price, shares):
-    run("BID " + ticker + " " + str(price) + " " + str(shares))
+    print run("BID " + ticker + " " + str(price) + " " + str(shares))
 def ask(ticker, price, shares):
-    run("ASK " + ticker + " " + str(price) + " " + str(shares))
+    print run("ASK " + ticker + " " + str(price) + " " + str(shares))
 def clear_bid(ticker):
-    run("CLEAR_BID " + ticker)
+    print run("CLEAR_BID " + ticker)
 def clear_ask(ticker):
-    run("CLEAR_ASK " + ticker)
+    print run("CLEAR_ASK " + ticker)
 def subscribe(user, password):
     HOST, PORT = "codebb.cloudapp.net", 17429
     
@@ -90,9 +90,10 @@ def subscribe(user, password):
     finally:
         sock.close()
 def unsubscribe():
-    run("UNSUBSCRIBE")
+    print run("UNSUBSCRIBE")
 def close_connection():
-    run("CLOSE_CONNECTION")
+    print run("CLOSE_CONNECTION")
+
 
 
 
