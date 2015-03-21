@@ -2,6 +2,7 @@ import socket
 import sys
     
 from hello import *
+from events import *
 
 def run(*commands):
     HOST, PORT = "codebb.cloudapp.net", 17429
