@@ -5,6 +5,10 @@ import events
 def net_worth_compare(item):
     return item['net_worth']
 
+def value_compare(item):
+    return item['value']
+
+
 def value(net_worth, ):
     a = min_sell(ticker)
     return net_worth/a
@@ -17,21 +21,41 @@ def event_loop():
     max_ticker_value = 0
     max_ticker_name = ''
     min_sell_value = 0
+
+    ticker_values = []
     for ticker in tickers.keys():
         a = tickers.get(ticker).get('net_worth')
         b = min_sell(ticker)
         new_value = a/b
+        ticker_values.append({'ticker':ticker,'value':new_value})
         if new_value > max_ticker_value:
             min_sell_value = b
             max_ticker_value = new_value
             max_ticker_name = ticker
 
+    sorted(ticker_values, key=value_compare)
+
 
     current_cash = clientpy2.my_cash()
-    shares_bought1 = current_cash//min_sell_value
+    shares_bought = current_cash//min_sell_value
     clientpy2.bid(max_ticker_name, min_sell_value, shares_bought)
 
+    threshold = 0.0001
+
+    second_ticker_name = ''
+    third_ticker_name = ''
+
     while True:
+        max_ticker_name = ticker_values[0]['ticker']
+        while clientpy2.my_securities(max_ticker_name, 'dividend_ratio') > threshold:
+            second_ticker_name = ticker_values[1]['ticker']
+            min_sell_value = clientpy2.min_sell(second_ticker_name)
+
+            current_cash = clientpy2.my_cash()
+            shares_bought = current_cash//min_sell_value
+            
+            clientpy2.bid(second_ticker_name, min_sell_value, )
+            
         clientpy2.bid()
 
 
