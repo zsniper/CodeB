@@ -42,3 +42,14 @@ def get_new_sell_price(our_orders, ticker, price):
     modifier= 0.15
     rate = rates.get(ticker)
     return bought_at[ticker]*(1 + rate - modifier)
+    
+def is_in_our_orders(ticker, our_orders):
+    print 'is_in_our_orders' + str(ticker) + '\n'
+    for action in our_orders:
+        if action['action'] == 'ASK':
+            return True
+    return False
+
+def get_our_orders(ticker, price):
+    print 'get_our_orders' + str(ticker) + '\n'
+    return clientpy2.my_orders(ticker)
