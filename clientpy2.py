@@ -58,7 +58,6 @@ def securities(ticker=False, key = False):
         return dic.get(ticker)
     return dic
 
-
 def orders(ticker):
     data = run("ORDERS " +ticker).split()[1:]
     dic = []
@@ -66,9 +65,9 @@ def orders(ticker):
             dic.append({'action': data[i*4],'price':float(data[i*4 +2]),'shares':int(data[i*4 + 3])})
     return dic
 def bid(ticker, price, shares):
-    run("BID " + ticker + " " + price + " " + shares)
+    run("BID " + ticker + " " + str(price) + " " + str(shares))
 def ask(ticker, price, shares):
-    run("ASK " + ticker + " " + price + " " + shares)
+    run("ASK " + ticker + " " + str(price) + " " + str(shares))
 def clear_bid(ticker):
     run("CLEAR_BID " + ticker)
 def clear_ask(ticker):
@@ -94,5 +93,8 @@ def unsubscribe():
     run("UNSUBSCRIBE")
 def close_connection():
     run("CLOSE_CONNECTION")
+
+
+
 
 
