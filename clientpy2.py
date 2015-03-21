@@ -1,6 +1,8 @@
 import socket
 import sys
     
+from hello import *
+
 def run(*commands):
     HOST, PORT = "codebb.cloudapp.net", 17429
     
@@ -40,10 +42,4 @@ def subscribe(user, password):
             rline = sfile.readline()
     finally:
         sock.close()
-        
-def ticker(key):
-    data=run("SECURITIES")
-    stock = data[data.find(key)+len(key):]
-    stock = " ".join(stock.split()[0:3])
-    return stock
 
