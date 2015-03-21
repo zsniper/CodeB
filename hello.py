@@ -1,3 +1,7 @@
+import clientpy2
 
-def hello():
-	print "Hello World"
+def mycash():
+	return clientpy2.run("MY_CASH")
+
+def hi():
+	print "hello world"
