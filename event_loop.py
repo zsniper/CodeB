@@ -46,6 +46,7 @@ def event_loop():
         ticker_values = sorted(ticker_values, key=value_compare)[::-1]
         print 'ticker_values2: ' + str(ticker_values)
 
+        # min_sell_value = min_sell_value - 
 
         current_cash = float(clientpy2.my_cash())
         shares_bought = current_cash//min_sell_value
