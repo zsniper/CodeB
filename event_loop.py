@@ -31,12 +31,18 @@ def event_loop():
 
     while True:
         
+        #print 'yo?'
         dividend_rates = update_dividends(dividend_rates);
+        #print 'wha?'
         order_npast = push_event(past_orders, tickers)
+
+        #print 'hi?'
 
         # map(broker.on_broker_event, order_npast['process'])
         map((lambda x: divhack.on_divhack_event(x, dividend_rates, active_tickers)), order_npast['process'])
+        #print 'oki'
         past_orders = order_npast['hist']
+        #print 'gotcha'
         cycle_ticker(next_ticker, active_tickers)
         print 'tick'
         time.sleep(0.5)
