@@ -65,7 +65,7 @@ def cycle_ticker(ticker_queue, active, persist, sec):
             new_ticker = ticker_queue.get()
             active[active.index(ticker)] = new_ticker
             persist[new_ticker]['liquidate'] = False    
-        return persist
+    return persist
 
 #returns list to process and past orders.
 def push_event(past, tickers):
