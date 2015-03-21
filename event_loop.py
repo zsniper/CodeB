@@ -45,72 +45,28 @@ def event_loop():
     second_ticker_name = ''
     third_ticker_name = ''
 
+    i = 0
+
     while True:
-        max_ticker_name = ticker_values[0]['ticker']
+        max_ticker_name = ticker_values[i]['ticker']
         while clientpy2.my_securities(max_ticker_name, 'dividend_ratio') > threshold:
-            second_ticker_name = ticker_values[1]['ticker']
+            second_ticker_name = ticker_values[(i+1)%len(tickers)]['ticker']
             min_sell_value = clientpy2.min_sell(second_ticker_name)
 
             current_cash = clientpy2.my_cash()
             shares_bought = current_cash//min_sell_value
             
-            clientpy2.bid(second_ticker_name, min_sell_value, )
-            
-        clientpy2.bid()
+            clientpy2.bid(second_ticker_name, min_sell_value, shares_bought)
+        
+        sale_price = min_sell(max_ticker_name)
+        we_have_left = clientpy2.my_securities(max_ticker_name, 'shares')
+        while we_have_left > 0:
+            clientpy2.ask(max_ticker_name, sale_price, we_have_left)
+            we_have_left = clientpy2.my_securities(max_ticker_name, 'shares')
+            sale_price = sale_price - 0.01
 
-
-    min_sell()
-
-    for ticker in tickers:
-
-
-
-def event_loop():
-    #event_queue = Queue.Queue
-    past_orders = {}
-    tickers = clientpy2.securities().keys()
-    for t in tickers:
-        past_orders[t] = []
-
-    numberoftickers = len(tickers)
-    rotation = 0
-    activetickers = []
-
-    liquidate = 1
-
-    while True:
-        if rotation % 2 == 0:
-            activetickers = tickers[0:numberoftickers/2]
-        elif rotation % 2 == 1:
-            activetickers = tickers[numberoftickers/2:-1]
-        order_npast = push_event(past_orders, activetickers)
-
-        for x in order_npast['process']:
-            x['liquidate'] = liquidate
-            events.on_event(x)
-
-        past_orders = order_npast['hist']
-        print 'tick'
-        # time.sleep(0.1)
-        rotation = (rotation + 1) % 2
-        liquidate = liquidate + 1
-    #sleep thread
-
-#returns list to process and past orders.
-def push_event(past, tickers):
-    process = []
-    new_past = {}
-    for ticker in tickers:
+        i = (i+1) % len(tickers)
 
 
 
-        orders = clientpy2.orders(ticker) #list of  dictionaries
-        #rate = clientpy2.my_securities(ticker, 'dividend_ratio')
-        new_past[ticker] = orders
-        for order in orders:
-            if ticker not in past.keys() or order not in past[ticker]:
-                order['ticker'] = ticker
-        #        order['rate'] = rate
-                process.append(order)
-    return {'process':process, 'hist':new_past}
 
