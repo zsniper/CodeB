@@ -4,7 +4,9 @@ import sys
 from hello import *
 from broker import *
 from divhack import *
+from divhack2 import *
 from event_loop import *
+from event_loop2 import *
 
 def run(*commands):
     HOST, PORT = "codebb.cloudapp.net", 17429

@@ -1,11 +1,11 @@
 import time
 import clientpy2
 import broker
-import divhack
+import divhack2
 import Queue
 
 
-def event_loop():
+def event_loop2():
     #finding original dividend rates.
     dividend_rates = {}
     sec = clientpy2.securities()
@@ -40,7 +40,7 @@ def event_loop():
         # map(broker.on_broker_event, order_npast['process'])
         #map((lambda x: divhack.on_divhack_event(x, dividend_rates, active_tickers)), order_npast['process'])
         for event in order_npast['process']:
-            persist = divhack.on_divhack_event(event, tickers, persist)
+            persist = divhack2.on_divhack_event(event, tickers, persist)
 
         past_orders = order_npast['hist']
         cycle_ticker(next_ticker, active_tickers)

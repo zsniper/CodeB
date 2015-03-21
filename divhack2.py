@@ -1,12 +1,12 @@
 from clientpy2 import clientpy2
 
-def on_divhack_event(e, rates, tickers, persist):
+def on_divhack_event(e, tickers, persist):
     if e['action'] == 'ASK' and e['ticker'] in tickers:
         #change current bids
         decrement_prices(persist)
 
         #buy
-        if price < sell_price(e['ticker'], persist) and (1 + persist['div_rate'] - 0.015) >= 1:
+        if e['price'] < sell_price(e['ticker'], persist) and (1 + persist['div_rate'] - 0.015) >= 1:
             clientpy2.bid(e['ticker'], e['price'], int(clientpy2.my_cash()/e['price']/3))
             persist['bought_at'][e['ticker']] = e['price']
 
