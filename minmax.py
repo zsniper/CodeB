@@ -6,7 +6,7 @@ def min_sell(ticker):
                 costs.append(data[i+2])
         return min(costs)
 
-def min_buy(ticker):
+def max_buy(ticker):
        data = run("ORDERS " + ticker).split(" ")
        costs = []
        for i in range(len(data)-2):
