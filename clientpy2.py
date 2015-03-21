@@ -5,27 +5,31 @@ from hello import *
 from events import *
 from event_loop import *
 
+HOST = "codebb.cloudapp.net"
+PORT = 17429
+g_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+g_sock.connect((HOST, PORT))
+g_sfile = g_sock.makefile()
+data="Goldfish" + " " + "fishgold" + "\n"
+g_sock.sendall(data)
+
 def run(*commands):
-    HOST, PORT = "codebb.cloudapp.net", 17429
+    data = "\n".join(commands) + "\n"
+
+    #try:
+        
+
+    g_sock.sendall(data)
+    rline = g_sfile.readline()
     
-    data="Goldfish" + " " + "fishgold" + "\n" + "\n".join(commands) + "\nCLOSE_CONNECTION\n"
+    # finally:
+    #     sock.close()
+    return rline
 
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        sock.connect((HOST, PORT))
-        sock.sendall(data)
-        sfile = sock.makefile()
-        rline = sfile.readline()
-        file1 =""
-        while rline:
-            #print(rline.strip())
-            file1 += rline.strip() + sfile.readline()
-            rline = sfile.readline()
-            
-    finally:
-        sock.close()
-    return file1
+def closeSocket():
+    global g_sock
+    g_sock.sendall("Goldfish" + " " + "fishgold" + "\nCLOSE_CONNECTION\n")
+    g_sock.close()
 
 
 #THE GIVEN FUNCTIONS

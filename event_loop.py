@@ -15,23 +15,28 @@ def event_loop():
 
     liquidate = 1
 
-    while True:
-        if rotation % 2 == 0:
-            activetickers = tickers[0:numberoftickers/2]
-        elif rotation % 2 == 1:
-            activetickers = tickers[numberoftickers/2:-1]
-        order_npast = push_event(past_orders, activetickers)
+    try: 
+        while True:
+            print 'hi'
+            if rotation % 2 == 0:
+                activetickers = tickers[0:numberoftickers/2]
+            elif rotation % 2 == 1:
+                activetickers = tickers[numberoftickers/2:-1]
+            order_npast = push_event(past_orders, activetickers)
 
-        for x in order_npast['process']:
-            x['liquidate'] = liquidate
-            events.on_event(x)
+            for x in order_npast['process']:
+                x['liquidate'] = liquidate
+                events.on_event(x)
 
-        past_orders = order_npast['hist']
-        print 'tick'
-        # time.sleep(0.1)
-        rotation = (rotation + 1) % 2
-        liquidate = liquidate + 1
-    #sleep thread
+            past_orders = order_npast['hist']
+            print 'tick'
+            # time.sleep(0.1)
+            rotation = (rotation + 1) % 2
+            liquidate = liquidate + 1
+        #sleep thread
+    finally:
+        clientpy2.closeSocket()
+
 
 #returns list to process and past orders.
 def push_event(past, tickers):
