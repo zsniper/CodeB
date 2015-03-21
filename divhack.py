@@ -8,6 +8,7 @@ def on_divhack_event(e, rates, tickers_3):
     our_orders = 0 #get_our_orders(e['ticker'], e['price'])
     
     
+
     if e['action'] == 'ASK'and e['ticker'] in tickers_3:
         price = get_worth_price(e['ticker'], e['price'])
         # if is_in_our_orders(e['ticker'], our_orders):
@@ -16,11 +17,11 @@ def on_divhack_event(e, rates, tickers_3):
         #         shares_to_sell = get_shares_to_sell(our_orders, e['ticker'], e['price'])
         #         clientpy2.ask(e['ticker'], undercut_price, shares_to_sell)
         #         return True
-        if price > 0:
+        new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'], rates)
+        if price < new_sell_price:
             shares_to_sell = get_shares_to_sell(our_orders, e['ticker'],tickers_3, e['price'])
             clientpy2.bid(e['ticker'], price, shares_to_sell)
             bought_at[e['ticker']]=price
-            new_sell_price = get_new_sell_price(our_orders, e['ticker'], e['price'], rates)
             clientpy2.ask(e['ticker'], new_sell_price, shares_to_sell)
             print 'bidding: ' + ' ticker: ' + str(e['ticker']) + ' price: ' + str(price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
             print 'asking: ' + ' ticker: ' + str(e['ticker']) + ' price: ' + str(new_sell_price) + ' shares_to_sell: ' + str(shares_to_sell) + '\n'
@@ -54,3 +55,9 @@ def is_in_our_orders(ticker, our_orders):
 def get_our_orders(ticker, price):
     print 'get_our_orders' + str(ticker) + '\n'
     return clientpy2.my_orders(ticker)
+
+def decrement_prices(rates):
+    m_orders = clientpy2.my_orders()
+
+    for key in m_orders.keys()
+        clientpy2.bid(key, get_new_sell_price(0, key, 0, rates), m_orders[key]['shares'])
